@@ -1,0 +1,100 @@
+<html>
+
+<body style="background-color:skyblue">
+<script src=/domain.js></script>
+
+<center>
+<font color=black size=6>Target : <script>document.write(domain)</script></font>
+<br>
+________________________________________________________________________________________________
+<br><br>
+<font color=black size=5>Ignored Extensions : <font color=yellow size=5><script>document.write(disallowed_ext)</script><br>
+<font color=black size=5>HTML Extensions : <font color=yellow size=5><script>document.write(html_list)</script><br>
+<font color=black size=5>Server Scripts Extensions : <font color=yellow size=5><script>document.write(scripts_list)</script><br></font>
+________________________________________________________________________________________________
+
+<br><br>
+<a href="#" onclick="js()"><font size=5>Javascripts</a>&emsp;
+<a href="#"  onclick="serverscript()">Server Scripts</a>&emsp;
+<a  href="#" onclick="html()">Htmls</a>&emsp;
+<a href="#"  onclick="others()">Others </a>&emsp;
+<a href="#"  onclick="about()">About </font></a>&emsp;<br><br>
+
+</center>
+
+<div id=links>
+<div>
+
+
+<script>
+
+
+var xmlhttp = new XMLHttpRequest();
+var x=document.getElementById("links");
+
+
+function about(){
+	x.innerHTML="<font size=5><center>Author : @RakeshMane10<br> Github : https://github.com/rakeshmane/<br></center>"
+}
+
+function js(){
+	x.innerHTML=""
+	url=domain+"_JS_Links.json"
+	api(url)
+}
+
+
+function html(){
+	x.innerHTML=""
+	url=domain+"_HTML_Links.json"
+	api(url)
+}
+
+function serverscript(){
+	x.innerHTML=""
+	url=domain+"_ServerScripts_Links.json"
+	api(url)
+}
+
+function others(){
+	x.innerHTML=""
+	url=domain+"_Others_Links.json"
+	api(url)
+}
+
+function api(url){
+
+	xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+    	var data=this.responseText
+    	data=data.replace(/'/g,'"')
+    	var myArr = JSON.parse(data);
+        arrange(myArr)
+    	}
+	};
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+}
+
+function arrange(data){
+    
+    for (var key in data) {
+        x.innerHTML=x.innerHTML+"<font size=5 color=black>"+key+"</font></br>"
+        var temp=data[key].toString().split(",")
+        for(var key_ in temp)
+        {	
+        	if(temp[key_].length>1)
+        	{
+        		id=parseInt(key_)+1
+        		x.innerHTML=x.innerHTML+id+"]&emsp;<font size=4 color=green>"+temp[key_]+"</font></br>"
+        	}
+        }
+    }
+
+}
+
+</script>
+
+
+<body>
+</html>

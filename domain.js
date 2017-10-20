@@ -1,0 +1,1 @@
+domain='google.com';disallowed_ext="['css']";html_list="['html', 'htm', 'xhtml', 'xhtm', 'shtml']";scripts_list="['php', 'jsp', 'asp', 'aspx', 'py', 'pl', 'ashx', 'php1', 'php2', 'php3', 'php4']";
