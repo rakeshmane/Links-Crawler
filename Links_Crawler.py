@@ -87,7 +87,7 @@ query=""
 p = subprocess.Popen(cmd, stdout=subprocess.PIPE,shell=True, preexec_fn=os.setsid)
 
 
-print("\nServer started \n Check :  http://127.0.0.1:"+str(port)+"\n\nPress Ctrl+C to stop Server and Ctrl+Z to exit\n\n")
+print("\nServer started \n Check :  http://127.0.0.1:"+str(port)+"\n\nPress Ctrl+Z to exit\n\n")
 
 print("--"*30)
 print("\nJS Extension : "+str(javascript_list))
