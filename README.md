@@ -18,6 +18,7 @@ Features:
 #Installation
 
 pip3 install nyawc
+
 git clone https://github.com/rakeshmane/Endpoints-Crawler.git
 cd Endpoints-Crawler
 python3 Endpoints_Crawler.py
