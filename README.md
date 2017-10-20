@@ -8,7 +8,7 @@ Features:
 
 #Running from terminal
 
-![Alt text](https://github.com/rakeshmane/Links-Crawler/raw/master/SS/Console.png "")
+![Alt text](https://github.com/rakeshmane/Links-Crawler/raw/master/SS/1111.png "")
 
 #Accessing crawled links 
 
