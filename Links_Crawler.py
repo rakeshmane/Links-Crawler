@@ -16,7 +16,7 @@ import sys
 
 
 if len(sys.argv)!=2:
-	print("Usage : python Web_Crawler.py http(s)://website.com")
+	print("Usage : python Links_Crawler.py http(s)://website.com")
 	exit()
 
 
@@ -93,6 +93,8 @@ print("--"*30)
 print("\nJS Extension : "+str(javascript_list))
 print("HTML Extension : "+str(html_list))
 print("Server Scripts Extension : "+str(scripts_list))
+print("Disallowed Extension : "+str(disallowed_extensions))
+
 
 print("--"*30)
 
