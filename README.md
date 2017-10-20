@@ -1,5 +1,9 @@
 # Endpoints-Crawler
-Simple web crawler to crawl website and organise and display the URL's based on page extensions.
+Simple web crawler for finding endpoints.
+
+Features:
+1) All crawled URLs are organized by page extensions
+2) 
 
 #Running from terminal
 
@@ -10,3 +14,10 @@ Simple web crawler to crawl website and organise and display the URL's based on 
 ![Alt text](https://github.com/rakeshmane/Endpoints-Crawler/raw/master/SS/2.png "")
 
 ![Alt text](https://github.com/rakeshmane/Endpoints-Crawler/raw/master/SS/3.png "")
+
+#Installation
+
+pip3 install nyawc
+git clone https://github.com/rakeshmane/Endpoints-Crawler.git
+cd Endpoints-Crawler
+python3 Endpoints_Crawler.py
