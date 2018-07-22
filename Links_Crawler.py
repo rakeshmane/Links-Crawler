@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3
 
 
-import os
+import os,json
 import signal
 import subprocess
 import time
@@ -162,7 +162,7 @@ def cb_request_after_finish(queue, queue_item, new_queue_items):
 
 		html_path_js[path].append(query)
 
-		open(domain+"_JS_Links.json","w").write(str(html_path_js)[28:-1])
+		open(domain+"_JS_Links.json","w").write(str(json.dumps(html_path_js)))
 		print(" JS > {}".format(queue_item.request.url))
 
 	elif extension(queue_item.request.url).lower() in html_list:		
@@ -174,7 +174,7 @@ def cb_request_after_finish(queue, queue_item, new_queue_items):
 
 		html_path_html[path].append(query)
 
-		open(domain+"_HTML_Links.json","w").write(str(html_path_html)[28:-1])
+		open(domain+"_HTML_Links.json","w").write(str(json.dumps(html_path_html)))
 
 		print(" HTML > {}".format(queue_item.request.url))
 
@@ -202,7 +202,7 @@ def cb_request_after_finish(queue, queue_item, new_queue_items):
 
 		html_path_other[path].append(query)
 
-		open(domain+"_Others_Links.json","w").write(str(html_path_other)[28:-1])
+		open(domain+"_Others_Links.json","w").write(str(json.dumps(html_path_other)))
 		print(" Others> {}".format(queue_item.request.url))
 
 	return CrawlerActions.DO_CONTINUE_CRAWLING
@@ -214,6 +214,4 @@ options.callbacks.request_after_finish = cb_request_after_finish # Called after 
 
 crawler = Crawler(options)
 crawler.start_with(Request(host))
-
-
 
