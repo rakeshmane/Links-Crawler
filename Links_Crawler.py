@@ -32,11 +32,11 @@ cmd="python -m SimpleHTTPServer "+str(port)+" 2>/dev/null"
 
 host=sys.argv[1]
 crawled_urls_to_check_dups=[]
-disallowed_extensions=["css"]
-#disallowed_extensions=["gif","jpg","png","css","jpeg","woff","ttf","eot","svg"]
-javascript_list=["js"]
-html_list=["html","htm","xhtml","xhtm","shtml"]
-scripts_list=["php","jsp","asp","aspx","py","pl","ashx","php1","php2","php3","php4"]
+#ignored_extensions=["css"]
+ignored_extensions=["gif","jpg","png","css","jpeg","woff","ttf","eot","svg","woff2","ico"]
+js_extensions=["js"]
+static_extensions=["html","htm","xhtml","xhtm","shtml"]
+scripts_extensions=["php","jsp","asp","aspx","py","pl","ashx","php1","php2","php3","php4"]
 
 
 
@@ -72,14 +72,14 @@ domain=host[host.find("://")+3:]
 if "/" in domain: # when whole path is specified
 	domain=domain[:domain.find("/")]
 
-open("domain.js","w").write("domain='"+domain+"';"+"disallowed_ext=\""+str(disallowed_extensions)+"\";"+"html_list=\""+str(html_list)+"\";"+"scripts_list=\""+str(scripts_list)+"\";")
+open("domain.js","w").write("domain='"+domain+"';"+"disallowed_ext=\""+str(ignored_extensions)+"\";"+"static_extensions=\""+str(static_extensions)+"\";"+"scripts_extensions=\""+str(scripts_extensions)+"\";")
 
 
 
-html_path_js=defaultdict(list)
-html_path_html=defaultdict(list)
-html_path_scripts=defaultdict(list)
-html_path_other=defaultdict(list)
+path_js=defaultdict(list)
+path_static=defaultdict(list)
+path_scripts=defaultdict(list)
+path_other=defaultdict(list)
 
 path=""
 query=""
@@ -90,10 +90,10 @@ p = subprocess.Popen(cmd, stdout=subprocess.PIPE,shell=True, preexec_fn=os.setsi
 print("\nServer started \n Check :  http://127.0.0.1:"+str(port)+"\n\nPress Ctrl+Z to exit\n\n")
 
 print("--"*30)
-print("\nJS Extension : "+str(javascript_list))
-print("HTML Extension : "+str(html_list))
-print("Server Scripts Extension : "+str(scripts_list))
-print("Disallowed Extension : "+str(disallowed_extensions))
+print("\nJS Extension : "+str(js_extensions))
+print("HTML Extension : "+str(static_extensions))
+print("Server Scripts Extension : "+str(scripts_extensions))
+print("Disallowed Extension : "+str(ignored_extensions))
 
 
 print("--"*30)
@@ -144,7 +144,7 @@ def cb_crawler_after_finish(queue):
 def cb_request_before_start(queue, queue_item):
   if queue_item.request.url in crawled_urls_to_check_dups: # To avoid duplicate links crawling
     return CrawlerActions.DO_SKIP_TO_NEXT
-  if extension(queue_item.request.url) in disallowed_extensions: # Don't crawl gif, jpg , etc
+  if extension(queue_item.request.url) in ignored_extensions: # Don't crawl gif, jpg , etc
     return CrawlerActions.DO_SKIP_TO_NEXT
   return CrawlerActions.DO_CONTINUE_CRAWLING
 
@@ -152,7 +152,7 @@ def cb_request_after_finish(queue, queue_item, new_queue_items):
 	global query,path
 	crawled_urls_to_check_dups.append(queue_item.request.url) # Add newly obtained URL in list
 
-	if extension(queue_item.request.url).lower() in javascript_list :
+	if extension(queue_item.request.url).lower() in js_extensions :
 		if("?" in queue_item.request.url):
 			path=queue_item.request.url[:queue_item.request.url.find("?")]
 			query=queue_item.request.url[queue_item.request.url.find("?"):]
@@ -160,25 +160,25 @@ def cb_request_after_finish(queue, queue_item, new_queue_items):
 			path=queue_item.request.url
 			query=""
 
-		html_path_js[path].append(query)
+		path_js[path].append(query)
 
-		open(domain+"_JS_Links.json","w").write(str(json.dumps(html_path_js)))
+		open(domain+"_JS_Links.json","w").write(str(json.dumps(path_js)))
 		print(" JS > {}".format(queue_item.request.url))
 
-	elif extension(queue_item.request.url).lower() in html_list:		
+	elif extension(queue_item.request.url).lower() in static_extensions:		
 		if("?" in queue_item.request.url):
 			path=queue_item.request.url[:queue_item.request.url.find("?")]
 			query=queue_item.request.url[queue_item.request.url.find("?"):]
 		else:
 			path=queue_item.request.url
 
-		html_path_html[path].append(query)
+		path_static[path].append(query)
 
-		open(domain+"_HTML_Links.json","w").write(str(json.dumps(html_path_html)))
+		open(domain+"_HTML_Links.json","w").write(str(json.dumps(path_static)))
 
 		print(" HTML > {}".format(queue_item.request.url))
 
-	elif extension(queue_item.request.url).lower() in scripts_list :
+	elif extension(queue_item.request.url).lower() in scripts_extensions :
 
 		if("?" in queue_item.request.url):
 			path=queue_item.request.url[:queue_item.request.url.find("?")]
@@ -186,9 +186,9 @@ def cb_request_after_finish(queue, queue_item, new_queue_items):
 		else:
 			path=queue_item.request.url
 
-		html_path_scripts[path].append(query)
+		path_scripts[path].append(query)
 
-		open(domain+"_ServerScripts_Links.json","w").write(str(json.dumps(html_path_scripts))) # Json format was not valid 
+		open(domain+"_ServerScripts_Links.json","w").write(str(json.dumps(path_scripts))) # Json format was not valid 
 		print(" ServerScripts > {}".format(queue_item.request.url))
 
 
@@ -200,9 +200,9 @@ def cb_request_after_finish(queue, queue_item, new_queue_items):
 		else:
 			path=queue_item.request.url
 
-		html_path_other[path].append(query)
+		path_other[path].append(query)
 
-		open(domain+"_Others_Links.json","w").write(str(json.dumps(html_path_other)))
+		open(domain+"_Others_Links.json","w").write(str(json.dumps(path_other)))
 		print(" Others> {}".format(queue_item.request.url))
 
 	return CrawlerActions.DO_CONTINUE_CRAWLING

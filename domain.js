@@ -1,0 +1,1 @@
+domain='rakeshmane.com';disallowed_ext="['gif', 'jpg', 'png', 'css', 'jpeg', 'woff', 'ttf', 'eot', 'svg', 'woff2', 'ico']";static_extensions="['html', 'htm', 'xhtml', 'xhtm', 'shtml']";scripts_extensions="['php', 'jsp', 'asp', 'aspx', 'py', 'pl', 'ashx', 'php1', 'php2', 'php3', 'php4']";
