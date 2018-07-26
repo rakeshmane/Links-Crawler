@@ -188,7 +188,7 @@ def cb_request_after_finish(queue, queue_item, new_queue_items):
 
 		html_path_scripts[path].append(query)
 
-		open(domain+"_ServerScripts_Links.json","w").write(str(html_path_scripts)[28:-1])
+		open(domain+"_ServerScripts_Links.json","w").write(str(json.dumps(html_path_scripts))) # Json format was not valid 
 		print(" ServerScripts > {}".format(queue_item.request.url))
 
 
